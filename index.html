@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="ArticFlow: Action-Conditioned Flow Matching for Skeleton-Free Articulated Generation (CoRL 2026)">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ArticFlow: Action-Conditioned Flow Matching for Skeleton-Free Articulated Generation</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <script src="static/js/fontawesome.all.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+  <style>
+    #viewer-canvas { width: 100%; height: 480px; border-radius: 10px; background: #fafafa; }
+    .viewer-btn.is-active { background-color: #363636; color: #fff; }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">ArticFlow: Action-Conditioned Flow Matching for Skeleton-Free Articulated Generation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><a href="https://www.creativemachineslab.com/">Jiong Lin</a>,</span>
+            <span class="author-block">Jinchen Ruan,</span>
+            <span class="author-block"><a href="https://www.hodlipson.com/">Hod Lipson</a></span>
+          </div>
+          <div class="is-size-5 publication-authors"><span class="author-block">Columbia University</span></div>
+          <div class="is-size-4 publication-authors"><span class="author-block has-text-weight-bold">CoRL 2026</span></div>
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://openreview.net/forum?id=xXnpKl2IgD" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span></a></span>
+              <span class="link-block">
+                <a href="https://github.com/jl6017/ArticFlow" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span><span>Code</span></a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="static/image/rollout_track_arrows.mp4" type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        A quadruped <b>generated as a point cloud</b>, reconstructed into a robot, and walking
+        under a trained velocity-tracking policy (purple arrow: joystick command).
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>Generating articulated 3D objects, from everyday tools like pliers and eyeglasses to
+          robotic arms and quadrupeds, requires modeling both geometric diversity and kinematic
+          constraints — a challenge that existing point-cloud generators ignore and prior
+          articulated methods address by assuming predefined kinematic skeletons. We propose
+          <b>ArticFlow</b>, a flow-matching framework that learns a controllable velocity field
+          from noise to target point sets under explicit action control. ArticFlow couples
+          (i) a latent flow that transports noise to a shape-prior code and (ii) a point flow
+          that transports points conditioned on the action and the shape prior. On
+          PartNet-Mobility and MuJoCo Menagerie, a single model per category synthesizes novel
+          shapes via latent interpolation and produces kinematically consistent deformations
+          under unseen actions. Generated point clouds further chain into a
+          point-cloud-to-URDF pipeline, closing the loop from skeleton-free generation to
+          simulation and policy training.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Interactive: generated point clouds in 4D</h2>
+    <p class="has-text-centered" style="margin-bottom: 1rem;">
+      Each sequence is a raw ArticFlow output: one action dimension swept while the shape latent
+      is held fixed. Drag to orbit, scroll to zoom.
+    </p>
+    <div class="buttons is-centered" id="seq-buttons">
+      <button class="button viewer-btn is-active" data-seq="dog_hip">Quadruped &middot; hip</button>
+      <button class="button viewer-btn" data-seq="dog_knee">Quadruped &middot; knee</button>
+      <button class="button viewer-btn" data-seq="eyeglasses">Eyeglasses</button>
+      <button class="button viewer-btn" data-seq="arm">Robot arm</button>
+      <button class="button" id="play-btn"><span class="icon"><i class="fas fa-pause"></i></span></button>
+    </div>
+    <div id="viewer-canvas"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">From generation to walking robots</h2>
+    <p class="has-text-centered">Per-link segmentation and twelve recovered joints on a generated
+    (latent-interpolated) quadruped — arrows show collision-free rotation directions — and the
+    same robot walking under a trained policy, rendered with its generated meshes.</p>
+    <img src="static/image/meshseg_joints_frames.png" alt="Discovered kinematics">
+    <img src="static/image/disco_mesh_rollout_strip.png" alt="Policy rollout">
+    <p class="has-text-centered" style="margin-top:1rem;">Reinforcement learning on reconstructed morphologies:
+    speed reward separates morphologies; on velocity tracking, all generated morphologies —
+    including one assembled entirely from discovered joints — match the real-robot reference.</p>
+    <img src="static/image/loco_composite.png" alt="Learning curves and frames">
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-half">
+        <video autoplay muted loop playsinline><source src="static/image/rollout_disco_mesh.mp4" type="video/mp4"></video>
+        <p class="has-text-centered is-size-6">Speed-objective policy, generated meshes</p>
+      </div>
+      <div class="column is-half">
+        <video autoplay muted loop playsinline><source src="static/image/dog_gen_sim.mp4" type="video/mp4"></video>
+        <p class="has-text-centered is-size-6">Reconstructed URDF actuated in simulation</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{lin2026articflow,
+  title     = {ArticFlow: Action-Conditioned Flow Matching for Skeleton-Free Articulated Generation},
+  author    = {Lin, Jiong and Ruan, Jinchen and Lipson, Hod},
+  booktitle = {Conference on Robot Learning (CoRL)},
+  year      = {2026}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>Page template adapted from <a href="https://nerfies.github.io">Nerfies</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  const container = document.getElementById("viewer-canvas");
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xfafafa);
+  const camera = new THREE.PerspectiveCamera(45, container.clientWidth / 480, 0.01, 100);
+  camera.position.set(0.9, 0.55, 0.9);
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(container.clientWidth, 480);
+  container.appendChild(renderer.domElement);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+
+  const geom = new THREE.BufferGeometry();
+  const mat = new THREE.PointsMaterial({ size: 0.008, vertexColors: true });
+  let points = null, frames = null, nPts = 0, nFrames = 0;
+  let playing = true, t = 0;
+  const FPS = 4.0;                                   // frame-lerp speed
+
+  function setColors(arr) {
+    const col = new Float32Array(nPts * 3);
+    let zmin = 1e9, zmax = -1e9;
+    for (let i = 0; i < nPts; i++) { const z = arr[i * 3 + 1]; if (z < zmin) zmin = z; if (z > zmax) zmax = z; }
+    const c1 = [0.12, 0.30, 0.55], c2 = [0.85, 0.45, 0.15];
+    for (let i = 0; i < nPts; i++) {
+      const f = (arr[i * 3 + 1] - zmin) / (zmax - zmin + 1e-9);
+      col[i * 3] = c1[0] + f * (c2[0] - c1[0]);
+      col[i * 3 + 1] = c1[1] + f * (c2[1] - c1[1]);
+      col[i * 3 + 2] = c1[2] + f * (c2[2] - c1[2]);
+    }
+    geom.setAttribute("color", new THREE.BufferAttribute(col, 3));
+  }
+
+  async function loadSeq(name) {
+    const man = await (await fetch("static/viewer/manifest.json")).json();
+    const meta = man[name];
+    const buf = await (await fetch(`static/viewer/${name}.bin`)).arrayBuffer();
+    const all = new Float32Array(buf);
+    nFrames = meta.frames; nPts = meta.points;
+    frames = [];
+    for (let s = 0; s < nFrames; s++) frames.push(all.subarray(s * nPts * 3, (s + 1) * nPts * 3));
+    // z-up data -> three.js y-up
+    for (let s = 0; s < nFrames; s++) {
+      const f = frames[s];
+      for (let i = 0; i < nPts; i++) {
+        const y = f[i * 3 + 1], z = f[i * 3 + 2];
+        f[i * 3 + 1] = z; f[i * 3 + 2] = -y;
+      }
+    }
+    const pos = new Float32Array(frames[0]);
+    geom.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    setColors(frames[0]);
+    if (!points) { points = new THREE.Points(geom, mat); scene.add(points); }
+    t = 0;
+  }
+
+  let last = performance.now();
+  function animate(now) {
+    requestAnimationFrame(animate);
+    const dt = (now - last) / 1000; last = now;
+    if (frames && playing) {
+      t += dt * FPS;
+      const cycle = 2 * (nFrames - 1);
+      const ping = t % cycle;
+      const ft = ping < nFrames - 1 ? ping : cycle - ping;   // ping-pong
+      const a = Math.floor(ft), b = Math.min(a + 1, nFrames - 1), mix = ft - a;
+      const pos = geom.attributes.position.array;
+      const fa = frames[a], fb = frames[b];
+      for (let i = 0; i < pos.length; i++) pos[i] = fa[i] + mix * (fb[i] - fa[i]);
+      geom.attributes.position.needsUpdate = true;
+    }
+    controls.update();
+    renderer.render(scene, camera);
+  }
+
+  document.querySelectorAll(".viewer-btn").forEach(btn => btn.addEventListener("click", () => {
+    document.querySelectorAll(".viewer-btn").forEach(b => b.classList.remove("is-active"));
+    btn.classList.add("is-active");
+    loadSeq(btn.dataset.seq);
+  }));
+  document.getElementById("play-btn").addEventListener("click", function () {
+    playing = !playing;
+    this.querySelector("i").className = playing ? "fas fa-pause" : "fas fa-play";
+  });
+  window.addEventListener("resize", () => {
+    camera.aspect = container.clientWidth / 480;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, 480);
+  });
+
+  loadSeq("dog_hip");
+  requestAnimationFrame(animate);
+})();
+</script>
+</body>
+</html>
