@@ -92,8 +92,9 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Interactive: generated point clouds in 4D</h2>
     <p class="has-text-centered" style="margin-bottom: 1rem;">
-      Each sequence is a raw ArticFlow output: one action dimension swept while the shape latent
-      is held fixed. Drag to orbit, scroll to zoom.
+      Each frame is an <b>independent sampling</b> of the model conditioned on its action command
+      (shape latent fixed, one action dimension swept) &mdash; no point correspondence and no temporal
+      interpolation, exactly as in kinematic simulation. Drag to orbit, scroll to zoom.
     </p>
     <div class="buttons is-centered" id="seq-buttons">
       <button class="button viewer-btn is-active" data-seq="dog_shoulder">Quadruped &middot; shoulder</button>
@@ -167,10 +168,10 @@
   controls.enableDamping = true;
 
   const geom = new THREE.BufferGeometry();
-  const mat = new THREE.PointsMaterial({ size: 0.008, vertexColors: true });
+  const mat = new THREE.PointsMaterial({ size: 0.010, vertexColors: true });
   let points = null, frames = null, nPts = 0, nFrames = 0;
   let playing = true, t = 0;
-  const FPS = 4.0;                                   // frame-lerp speed
+  const FPS = 7.0;                                   // independent frames per second
 
   function setColors(arr) {
     const col = new Float32Array(nPts * 3);
@@ -218,10 +219,9 @@
       const cycle = 2 * (nFrames - 1);
       const ping = t % cycle;
       const ft = ping < nFrames - 1 ? ping : cycle - ping;   // ping-pong
-      const a = Math.floor(ft), b = Math.min(a + 1, nFrames - 1), mix = ft - a;
-      const pos = geom.attributes.position.array;
-      const fa = frames[a], fb = frames[b];
-      for (let i = 0; i < pos.length; i++) pos[i] = fa[i] + mix * (fb[i] - fa[i]);
+      const a = Math.round(ft);                               // DISCRETE: no lerp —
+      const pos = geom.attributes.position.array;             // frames are independent
+      pos.set(frames[a]);                                     // samples, not tracked points
       geom.attributes.position.needsUpdate = true;
     }
     controls.update();
