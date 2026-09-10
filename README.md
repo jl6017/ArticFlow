@@ -2,7 +2,7 @@
 
 **CoRL 2026** · Jiong Lin, Jinchen Ruan, Hod Lipson (Columbia University)
 
-[Project page](https://jl6017.github.io/ArticFlow/) · [OpenReview](https://openreview.net/forum?id=xXnpKl2IgD)
+[Project page](https://jl6017.github.io/ArticFlow/) · [arXiv](https://arxiv.org/abs/2511.17883) · [OpenReview](https://openreview.net/forum?id=xXnpKl2IgD)
 
 ArticFlow generates articulated 3D objects — pliers, scissors, eyeglasses, robot arms,
 quadrupeds — as deformable point clouds under explicit action control, **without a
@@ -80,6 +80,16 @@ itself is [AutoURDF](https://github.com/jl6017/AutoURDF) and is not vendored her
 ## Citation
 
 ```bibtex
+@misc{lin2025articflow,
+  title         = {ArticFlow: Generative Simulation of Articulated Mechanisms},
+  author        = {Lin, Jiong and Ruan, Jinchen and Lipson, Hod},
+  year          = {2025},
+  eprint        = {2511.17883},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.RO}
+}
+
+% CoRL 2026 (camera-ready reference to follow)
 @inproceedings{lin2026articflow,
   title     = {ArticFlow: Action-Conditioned Flow Matching for Skeleton-Free Articulated Generation},
   author    = {Lin, Jiong and Ruan, Jinchen and Lipson, Hod},
