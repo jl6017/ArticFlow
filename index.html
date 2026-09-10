@@ -52,12 +52,12 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <video id="teaser" autoplay muted loop playsinline style="display:block;margin:0 auto;max-width:100%;border-radius:10px;">
-        <source src="static/image/rollout_track_arrows.mp4?v=2" type="video/mp4">
+      <video id="teaser" autoplay muted loop playsinline controls style="display:block;margin:0 auto;max-width:100%;border-radius:10px;">
+        <source src="static/image/af_video.mp4" type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered">
-        A quadruped <b>generated as a point cloud</b>, reconstructed into a robot, and walking
-        under a trained velocity-tracking policy (purple arrow: joystick command).
+        Supplementary video: action-conditioned generation across five categories —
+        every shape a <b>generated point cloud</b>, every motion a commanded action.
       </h2>
     </div>
   </div>
@@ -108,27 +108,24 @@
 
 <section class="section">
   <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">From generation to walking robots</h2>
-    <p class="has-text-centered">Per-link segmentation and twelve recovered joints on a generated
-    (latent-interpolated) quadruped — arrows show collision-free rotation directions — and the
-    same robot walking under a trained policy, rendered with its generated meshes.</p>
-    <img src="static/image/meshseg_joints_frames.png" alt="Discovered kinematics">
-    <img src="static/image/disco_mesh_rollout_strip.png" alt="Policy rollout">
-    <p class="has-text-centered" style="margin-top:1rem;">Reinforcement learning on reconstructed morphologies:
-    speed reward separates morphologies; on velocity tracking, all generated morphologies —
-    including one assembled entirely from discovered joints — match the real-robot reference.</p>
-    <img src="static/image/loco_composite.png" alt="Learning curves and frames">
-    <div class="columns is-centered" style="margin-top:1rem;">
-      <div class="column is-half">
-        <video autoplay muted loop playsinline><source src="static/image/rollout_disco_mesh.mp4?v=2" type="video/mp4"></video>
-        <p class="has-text-centered is-size-6">Speed-objective policy, generated meshes</p>
-      </div>
-      <div class="column is-half">
-        <video autoplay muted loop playsinline><source src="static/image/dog_gen_sim.mp4?v=2" type="video/mp4"></video>
-        <p class="has-text-centered is-size-6">Reconstructed URDF actuated in simulation</p>
-      </div>
-    </div>
+    <h2 class="title is-3 has-text-centered">Two flows, one model per category</h2>
+    <p class="has-text-centered">A latent flow samples the shape-prior code; the point flow
+    transports noise to the posed shape, conditioned on the action and the shape prior.</p>
+    <img src="static/image/fig_concept.png" alt="Concept">
+    <h2 class="title is-3 has-text-centered" style="margin-top:2rem;">Generation: shape &times; action</h2>
+    <p class="has-text-centered">Holding the shape prior fixed produces kinematically consistent
+    deformations of the same instance; holding the action fixed varies appearance under the same
+    pose. Interpolating the shape latent yields novel instances.</p>
+    <img src="static/image/fig_gen.png" alt="Generation grid">
+    <p class="has-text-centered" style="margin-top:1.5rem;">Generated sweeps further chain into a
+    point-cloud-to-URDF pipeline; the reconstructed robot below is actuated in simulation
+    (see the <a href="https://github.com/jl6017/ArticFlow/blob/main/docs/ARTICFLOW_TO_URDF.md">repo docs</a>).</p>
+    <div class="columns is-centered"><div class="column is-two-thirds">
+      <video autoplay muted loop playsinline style="width:100%;border-radius:10px;"><source src="static/image/dog_gen_sim.mp4?v=2" type="video/mp4"></video>
+    </div></div>
   </div>
+</section>
+
 </section>
 
 <section class="section" id="BibTeX">
