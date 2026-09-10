@@ -9,9 +9,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="static/css/index.css">
-  <script src="static/js/fontawesome.all.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
   <style>
@@ -53,8 +52,8 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <video id="teaser" autoplay muted loop playsinline height="100%">
-        <source src="static/image/rollout_track_arrows.mp4" type="video/mp4">
+      <video id="teaser" autoplay muted loop playsinline style="display:block;margin:0 auto;max-width:100%;border-radius:10px;">
+        <source src="static/image/rollout_track_arrows.mp4?v=2" type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered">
         A quadruped <b>generated as a point cloud</b>, reconstructed into a robot, and walking
@@ -121,11 +120,11 @@
     <img src="static/image/loco_composite.png" alt="Learning curves and frames">
     <div class="columns is-centered" style="margin-top:1rem;">
       <div class="column is-half">
-        <video autoplay muted loop playsinline><source src="static/image/rollout_disco_mesh.mp4" type="video/mp4"></video>
+        <video autoplay muted loop playsinline><source src="static/image/rollout_disco_mesh.mp4?v=2" type="video/mp4"></video>
         <p class="has-text-centered is-size-6">Speed-objective policy, generated meshes</p>
       </div>
       <div class="column is-half">
-        <video autoplay muted loop playsinline><source src="static/image/dog_gen_sim.mp4" type="video/mp4"></video>
+        <video autoplay muted loop playsinline><source src="static/image/dog_gen_sim.mp4?v=2" type="video/mp4"></video>
         <p class="has-text-centered is-size-6">Reconstructed URDF actuated in simulation</p>
       </div>
     </div>
