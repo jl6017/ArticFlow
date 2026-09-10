@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.so
+*.egg-info/
+build/
+checkpoints/
+*.pt
+runs/
+data/
+dataset/*/
+!dataset/datamaker/
+outputs/
