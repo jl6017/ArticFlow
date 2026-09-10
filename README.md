@@ -89,13 +89,7 @@ itself is [AutoURDF](https://github.com/jl6017/AutoURDF) and is not vendored her
   primaryClass  = {cs.RO}
 }
 
-% CoRL 2026 (camera-ready reference to follow)
-@inproceedings{lin2026articflow,
-  title     = {ArticFlow: Action-Conditioned Flow Matching for Skeleton-Free Articulated Generation},
-  author    = {Lin, Jiong and Ruan, Jinchen and Lipson, Hod},
-  booktitle = {Conference on Robot Learning (CoRL)},
-  year      = {2026}
-}
+% CoRL 2026 camera-ready citation: coming soon
 ```
 
 ## Acknowledgments
