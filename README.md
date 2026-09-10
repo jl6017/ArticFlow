@@ -2,7 +2,7 @@
 
 **CoRL 2026** · Jiong Lin, Jinchen Ruan, Hod Lipson (Columbia University)
 
-[Project page](https://jl6017.github.io/ArticFlow/) · [arXiv](https://arxiv.org/abs/2511.17883) · [OpenReview](https://openreview.net/forum?id=xXnpKl2IgD)
+[Project page](https://jl6017.github.io/ArticFlow/) · [arXiv](https://arxiv.org/abs/2511.17883)
 
 ArticFlow generates articulated 3D objects — pliers, scissors, eyeglasses, robot arms,
 quadrupeds — as deformable point clouds under explicit action control, **without a
