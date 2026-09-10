@@ -11,7 +11,7 @@ code and (ii) an action-conditioned point flow that transports noise to the pose
 One model per category spans shapes and actions, supports interpolation in both, and
 its outputs chain into a point-cloud-to-URDF pipeline for simulation and policy training.
 
-<p align="center"><img src="docs/figures/loco_composite.png" width="90%"></p>
+<p align="center"><img src="docs/figures/gen_grid.png" width="90%"></p>
 
 ## Install
 
