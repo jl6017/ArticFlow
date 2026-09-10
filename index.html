@@ -96,8 +96,8 @@
       is held fixed. Drag to orbit, scroll to zoom.
     </p>
     <div class="buttons is-centered" id="seq-buttons">
-      <button class="button viewer-btn is-active" data-seq="dog_hip">Quadruped &middot; hip</button>
-      <button class="button viewer-btn" data-seq="dog_knee">Quadruped &middot; knee</button>
+      <button class="button viewer-btn is-active" data-seq="dog_shoulder">Quadruped &middot; shoulder</button>
+      <button class="button viewer-btn" data-seq="dog_hip">Quadruped &middot; hip</button>
       <button class="button viewer-btn" data-seq="eyeglasses">Eyeglasses</button>
       <button class="button viewer-btn" data-seq="arm">Robot arm</button>
       <button class="button" id="play-btn"><span class="icon"><i class="fas fa-pause"></i></span></button>
@@ -243,7 +243,7 @@
     renderer.setSize(container.clientWidth, 480);
   });
 
-  loadSeq("dog_hip");
+  loadSeq("dog_shoulder");
   requestAnimationFrame(animate);
 })();
 </script>
